@@ -7,6 +7,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
+    publicPath: '/'
   },
   mode: 'development',
   plugins: [
@@ -43,6 +44,7 @@ module.exports = {
   },
   devServer: {
     port: 8080,
-    open: 'Google Chrome'
+    open: 'Google Chrome',
+    historyApiFallback: true
   }
 };
