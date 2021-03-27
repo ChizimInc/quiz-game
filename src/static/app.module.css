@@ -1,0 +1,18 @@
+body {
+  background-color: azure;
+}
+
+.nav {
+  background-color: #673ab7;
+}
+
+.answerInput {
+  position: relative !important;
+  opacity: 100% !important;
+  margin-right: 6px;
+}
+
+.answerLabel {
+  display: flex;
+  align-items: center;
+}
