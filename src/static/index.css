@@ -1,0 +1,12 @@
+.login-input {
+  width: 100% !important
+}
+
+.row-center {
+  display: flex;
+  justify-content: center;
+}
+
+.card-center {
+  margin-left: 0px !important;
+}

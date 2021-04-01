@@ -4,18 +4,25 @@ from typing import List, Optional
 class Answer(BaseModel):
     id: int
     title: str
-    answerOwner_id: int 
+    answerOwner_id: int
+
+    class Config:
+        orm_mode = True
+
 
 class Question(BaseModel):
     id: int
     title: str
     questionOwner_id: int
-    answers: List[Answer]
+    answers: List[Answer] = []
+
+    class Config:
+        orm_mode = True
 
 class ItemBase(BaseModel):
     title: str
     description: Optional[str] = None
-    questions: List[Question]
+    questions: List[Question] = []
 
 class ItemCreate(ItemBase):
     pass

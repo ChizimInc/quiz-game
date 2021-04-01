@@ -3,6 +3,8 @@ import {Question} from './components/Question'
 import quizQuestions from './api/quizQuestions.js'
 import appStyles from './static/app.module.css'
 import {Nav} from './components/Nav'
+import './static/index.css'
+
 
 class App extends Component {
   constructor(props) {

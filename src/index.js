@@ -9,6 +9,7 @@ import {
 
 import App from './App';
 import Dashboard from './components/Dashboard';
+import {Login} from './components/Login'
 
 
 const routing = (
@@ -17,6 +18,7 @@ const routing = (
       <Switch>
         <Route exact path='/' component={App}/>
         <Route path='/dashboard' component={Dashboard}/>
+        <Route path='/login' component={Login}/>
       </Switch>
     </div>
   </Router>
