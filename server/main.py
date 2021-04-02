@@ -67,3 +67,8 @@ def create_item_for_user(
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)
     return items
+
+@app.get("/game-items/", response_model=schemas.Item)
+def read_item_by_id(item_id: int, db: Session = Depends(get_db)):
+    items = crud.get_item_by_id(db, item_id=item_id)
+    return items
