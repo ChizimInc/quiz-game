@@ -18,7 +18,7 @@ export const Login = () => {
               <div className="card-image">
                 <img src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg"/>
                 <span className="card-title">
-                {btn ? 'Create new account':'Sing in'}
+                {btn ? 'Create new account':'Sign in'}
                 </span>
 
                 <a onClick={ () => setBtn(!btn) }

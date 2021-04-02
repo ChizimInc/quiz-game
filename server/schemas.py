@@ -9,7 +9,6 @@ class Answer(BaseModel):
     class Config:
         orm_mode = True
 
-
 class Question(BaseModel):
     id: int
     title: str
