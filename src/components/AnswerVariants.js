@@ -13,7 +13,7 @@ export const AnswerVariants = (props) => {
                  value={props.item.question}
                  name="radio"
                />
-               {item.answer}
+               {item.title}
             </label>
           )}
       </form>

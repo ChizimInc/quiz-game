@@ -11,7 +11,7 @@ export const List = (props) => {
             <p>{props.item.description}</p>
           </div>
           <div class="card-action">
-            <Link to={`/game/${props.item.title}`}>To game</Link>
+            <Link to={`/game/${props.item.id}/${props.item.title}`}>To game</Link>
           </div>
         </div>
       </div>
