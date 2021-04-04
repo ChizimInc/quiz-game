@@ -30,13 +30,11 @@ function App(props){
          if(userData !== []){
             setUserData(props.location.userData)
             setLoged(true)
-            console.log("userData from App: ", props.location.userData)
             localStorage.setItem('userData', JSON.stringify(props.location.userData));
          }
        }else{
          if(JSON.parse(localStorage.getItem('userData'))){
            setUserData(JSON.parse(localStorage.getItem('userData')))
-           console.log("UserData from localStorage", JSON.parse(localStorage.getItem('userData')))
          }
        }
 

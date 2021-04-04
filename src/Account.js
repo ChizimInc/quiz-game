@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
+import {Redirect} from 'react-router-dom'
 import {Nav} from './components/Nav'
+import {ShowUserInfo} from './components/Account/ShowUserInfo'
 
-export const Dashboard = props => {
+export const Account = props => {
 
   const [isLoged, setLoged] = useState(false)
   const [userData, setUserData] = useState([])
@@ -20,11 +22,9 @@ export const Dashboard = props => {
 
   return(
     <div>
-    <Nav userData={userData} />
-      <div className="container">
-        <h1>Dashboard</h1>
-        <h5>Hello {userData.username}</h5>
-      </div>
+      <Nav userData={userData} />
+      <ShowUserInfo userData={userData} />
+      { !isLoged && <Redirect to={{ pathname: "/login"}}/> }
     </div>
   )
 }

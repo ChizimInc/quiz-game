@@ -54,20 +54,20 @@ function Signup() {
 
   return(
     <form onSubmit={signUpSubmit} className={appStyles.loginForm}>
-        <div class="input-field col s6 login-input">
-          <input onChange={changeUsername} id="log-nick" type="text" class="validate"/>
-          <label class="active" for="log-nick">Username</label>
+        <div className="input-field col s6 login-input">
+          <input onChange={changeUsername} id="log-nick" type="text" className="validate"/>
+          <label className="active" for="log-nick">Username</label>
         </div>
-       <div class="input-field col s6 login-input">
-         <input onChange={changeEmail} id="log-email" type="email" class="validate"/>
-         <label class="active" for="log-email">E-Mail</label>
+       <div className="input-field col s6 login-input">
+         <input onChange={changeEmail} id="log-email" type="email" className="validate"/>
+         <label className="active" for="log-email">E-Mail</label>
        </div>
-       <div class="input-field col s6 login-input">
-         <input onChange={changePassword} id="log-pass" type="password" class="validate"/>
-         <label class="active" for="log-pass">Password</label>
+       <div className="input-field col s6 login-input">
+         <input onChange={changePassword} id="log-pass" type="password" className="validate"/>
+         <label className="active" for="log-pass">Password</label>
        </div>
        <button type="submit" className={appStyles.loginSubmit}>
-          <a class="waves-effect waves-light btn-small login-submit">Sign up</a>
+          <a className="waves-effect waves-light btn-small login-submit">Sign up</a>
        </button>
        {loading && <Preloader />}
        {isLoged && <Redirect to={{ pathname: "/", userData: userData }}/>}

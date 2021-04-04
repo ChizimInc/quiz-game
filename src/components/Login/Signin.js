@@ -10,16 +10,16 @@ export const Signin = () => {
 
   return(
     <form onSubmit={signInSubmit} className={appStyles.loginForm}>
-       <div class="input-field col s6 login-input">
-         <input id="log-email" type="email" class="validate"/>
-         <label class="active" for="log-email">E-Mail</label>
+       <div className="input-field col s6 login-input">
+         <input id="log-email" type="email" className="validate"/>
+         <label className="active" for="log-email">E-Mail</label>
        </div>
-       <div class="input-field col s6 login-input">
-         <input id="log-pass" type="password" class="validate"/>
-         <label class="active" for="log-pass">Password</label>
+       <div className="input-field col s6 login-input">
+         <input id="log-pass" type="password" className="validate"/>
+         <label className="active" for="log-pass">Password</label>
        </div>
        <button type="submit" className={appStyles.loginSubmit}>
-          <a class="waves-effect waves-light btn-small login-submit">Sign in</a>
+          <a className="waves-effect waves-light btn-small login-submit">Sign in</a>
        </button>
     </form>
   )

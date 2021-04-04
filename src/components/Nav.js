@@ -9,7 +9,6 @@ export const Nav = (props) => {
   useEffect( () => {
     if (props.userData) {
       setUserData(props.userData)
-      console.log("userData from Nav: ", props.userData)
     }
   }, [userData] );
 
@@ -18,10 +17,17 @@ export const Nav = (props) => {
         <div className="nav-wrapper container">
           <Link className="brand-logo" to="/">React-quiz App</Link>
           <ul id="nav-mobile" className="right hide-on-med-and-down">
-            <li><Link to="/dashboard">Dashboard</Link></li>
             {
               userData.username
-                ? <li><Link to="/account">{userData.username}</Link></li>
+                ? <li><Link
+                    to={{ pathname: "/dashboard", userData }}>Dashboard</Link></li>
+                : <li><Link to="/dashboard">Dashboard</Link></li>
+            }
+            {
+              userData.username
+                ? <li><Link
+                        to={{ pathname: "/account", userData: userData }}
+                        >{userData.username}</Link></li>
                 : <li><Link to="/login">Sign in</Link></li>
             }
           </ul>

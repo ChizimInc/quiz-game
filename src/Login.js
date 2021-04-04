@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {Redirect} from 'react-router-dom'
 import appStyles from './static/app.module.css'
 import {Nav} from './components/Nav'
 import {Signin} from './components/Login/Signin'
@@ -7,6 +8,15 @@ import Signup from './components/Login/Signup'
 export const Login = (props) => {
 
   const [btn, setBtn] = useState(false)
+  const [isLoged, setLoged] = useState(false)
+  const [userData, setUserData] = useState([])
+
+  if(isLoged == false){
+    if(JSON.parse(localStorage.getItem('userData'))){
+      setUserData(JSON.parse(localStorage.getItem('userData')))
+      setLoged(true)
+    }
+  }
 
   return(
     <div className="appStyles.login">
@@ -34,6 +44,9 @@ export const Login = (props) => {
                   {btn
                     ? <Signup />
                     : <Signin />
+                  }
+                  {
+                    isLoged && <Redirect to="/Account" />
                   }
                 </div>
               </div>
