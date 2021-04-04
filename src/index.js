@@ -9,9 +9,9 @@ import {
 } from "react-router-dom";
 
 import App from './App';
-import Dashboard from './components/Dashboard';
-import {Login} from './components/Login'
-import GameShowPage from './components/GameShowPage'
+import Dashboard from './Dashboard';
+import {Login} from './Login'
+import Game from './Game'
 
 
 const routing = (
@@ -21,7 +21,7 @@ const routing = (
         <Route exact path='/' component={App}/>
         <Route path='/dashboard' component={Dashboard}/>
         <Route path='/login' component={Login}/>
-        <Route path='/game/:id/:title' component={GameShowPage}/>
+        <Route path='/game/:id/:title' component={Game}/>
       </Switch>
     </div>
   </Router>

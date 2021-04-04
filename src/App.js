@@ -1,63 +1,65 @@
-import React, {Component} from 'react'
-import {Question} from './components/Question'
-import {Games} from './components/Games'
+import React, {Component, useState, useEffect} from 'react'
+import {Preloader} from './components/Preloader'
+import {Question} from './components/Game/Question'
+import {Games} from './components/App/Games'
 import quizQuestions from './api/quizQuestions.js'
 import appStyles from './static/app.module.css'
 import {Nav} from './components/Nav'
 import './static/index.css'
 
 
-class App extends Component {
-  constructor(props) {
-    super(props);
+function App(props){
 
-    this.state = {
-      isLoaded: false,
-      db: quizQuestions,
-      selectedOption: ""
-    };
+  const [db, setDb] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [isLoged, setLoged] = useState(false)
+  const [userData, setUserData] = useState([])
 
-  };
+  useEffect(function effectFunction() {
+       async function fetchItems() {
+           const path = "http://127.0.0.1:8000/games-items/?skip=0&limit=100";
+           const response = await fetch(path);
+           const json = await response.json();
 
-  componentDidMount() {
-    fetch("http://127.0.0.1:8000/games-items/?skip=0&limit=100")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          console.log(result)
-          this.setState({
-            db: result
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      )
-  }
+           setDb(json);
+           setLoading(false)
+       }
+       fetchItems();
 
+       if(props.location.userData){
+         if(userData !== []){
+            setUserData(props.location.userData)
+            setLoged(true)
+            console.log("userData from App: ", props.location.userData)
+            localStorage.setItem('userData', JSON.stringify(props.location.userData));
+         }
+       }else{
+         if(JSON.parse(localStorage.getItem('userData'))){
+           setUserData(JSON.parse(localStorage.getItem('userData')))
+           console.log("UserData from localStorage", JSON.parse(localStorage.getItem('userData')))
+         }
+       }
 
+   }, []);
 
-
-  render(){
-
-    console.log(this.state.selectedOption);
-
-    const quiz = this.state.db.map(item => <Games item={item} selected={this.state.selectedOption}/>)
+    const quiz = db.map(item => <Games item={item}/> )
     return(
-      <div>
-        <Nav/>
-        <div className="container">
-          <h3 className={appStyles.h3allgames}>All games:</h3>
-          <div>
-            {quiz}
+        <div>
+          <Nav userData={userData}/>
+          <div className="container">
+            <h3 className={appStyles.h3allgames}>All games:</h3>
+            <div>
+              {
+                quiz.length
+                  ? quiz
+                  : loading
+                    ? <Preloader />
+                  : <p>No data</p>
+              }
+            </div>
           </div>
         </div>
-      </div>
     );
-  }
 }
 
 export default App;

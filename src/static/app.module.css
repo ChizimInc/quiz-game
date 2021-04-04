@@ -24,3 +24,9 @@ body {
 .h3allgames {
   color: #673ab7;
 }
+
+.loginSubmit{
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
