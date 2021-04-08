@@ -55,6 +55,18 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
+@app.get("/users/login/", response_model=schemas.User)
+def login_user(email: str, password: str, db: Session = Depends(get_db)):
+    db_user = crud.login_user(db, email=email, password=password)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
+@app.get("/users/login/email/", response_model=schemas.User)
+def get_user_by_email(email: str, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email=email)
+    return db_user
+
 
 @app.post("/users/{user_id}/games-items/", response_model=schemas.Item)
 def create_item_for_user(

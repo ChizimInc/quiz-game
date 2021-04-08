@@ -1,26 +1,59 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {Redirect} from 'react-router-dom'
 import appStyles from '../../static/app.module.css'
+import {Preloader} from '../Preloader'
+import axios from 'axios'
 
 export const Signin = () => {
 
+  const [email, setEmail] = useState([])
+  const [password, setPassword] = useState([])
+  const [userData, setUserData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [isLoged, setLoged] = useState(false)
+
   function signInSubmit(event) {
-    console.log("submit sign in")
     event.preventDefault()
+    setLoading(true)
+
+    const hash = "notreallyhashed"
+
+    const path = `http://127.0.0.1:8000/users/login/?email=${email}&password=${password}`;
+
+    axios.get(path)
+    .then((response) => {
+      if(response.status == 200){
+        setUserData(response.data)
+        setLoged(true)
+        setLoading(false)
+      }
+    });
+
+  }
+
+  function changeEmail(event){
+    setEmail(event.target.value)
+  }
+
+  function changePassword(event){
+    setPassword(event.target.value)
   }
 
   return(
     <form onSubmit={signInSubmit} className={appStyles.loginForm}>
        <div className="input-field col s6 login-input">
-         <input id="log-email" type="email" className="validate"/>
+         <input onChange={changeEmail} id="log-email" type="email" className="validate"/>
          <label className="active" for="log-email">E-Mail</label>
        </div>
        <div className="input-field col s6 login-input">
-         <input id="log-pass" type="password" className="validate"/>
+         <input onChange={changePassword} id="log-pass" type="password" className="validate"/>
          <label className="active" for="log-pass">Password</label>
        </div>
        <button type="submit" className={appStyles.loginSubmit}>
           <a className="waves-effect waves-light btn-small login-submit">Sign in</a>
        </button>
+       {loading && <Preloader />}
+       {isLoged && <Redirect to={{ pathname: "/", userData: userData }}/>}
     </form>
   )
 }
