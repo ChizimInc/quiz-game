@@ -26,6 +26,30 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
+def update_user_admin_status(db: Session, user:schemas.User):
+    user_db = db.query(models.User).filter(models.User.email == user.email).first()
+    user_db.is_admin = True
+    db.commit()
+    db.refresh(user_db)
+    return user_db
+
+
+def update_user_data(db: Session, user:schemas.User):
+    user_db = db.query(models.User).filter(models.User.email == user.email).first()
+    user_db.username = user.username
+    if not user.password :
+        user_db.hashed_password = user.password
+
+    print("UserDb",user_db)
+    db.commit()
+    db.refresh(user_db)
+    return user_db
+
+def delete_user(db: Session, user:schemas.User):
+    user_db = db.query(models.User).filter(models.User.email == user.email).first()
+    db.delete(user_db)
+    db.commit()
+
 def get_items(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Item).offset(skip).limit(limit).all()
 

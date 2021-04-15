@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {Nav} from './components/Nav'
+import {Content} from './components/Dashboard/Content'
 
 export const Dashboard = props => {
 
@@ -22,8 +23,7 @@ export const Dashboard = props => {
     <div>
     <Nav userData={userData} />
       <div className="container">
-        <h1>Dashboard</h1>
-        <h5>Hello {userData.username}</h5>
+        {userData.is_admin && <Content userData={userData} /> }
       </div>
     </div>
   )

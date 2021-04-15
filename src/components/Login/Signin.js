@@ -3,6 +3,7 @@ import {Redirect} from 'react-router-dom'
 import appStyles from '../../static/app.module.css'
 import {Preloader} from '../Preloader'
 import axios from 'axios'
+import {EventMessage} from '../EventMessage'
 
 export const Signin = () => {
 
@@ -11,6 +12,7 @@ export const Signin = () => {
   const [userData, setUserData] = useState([])
   const [loading, setLoading] = useState(false)
   const [isLoged, setLoged] = useState(false)
+  const [error, setError] = useState("")
 
   function signInSubmit(event) {
     event.preventDefault()
@@ -27,6 +29,9 @@ export const Signin = () => {
         setLoged(true)
         setLoading(false)
       }
+    }, (error) => {
+      setLoading(false)
+      setError("Login or password is wrong")
     });
 
   }
@@ -54,6 +59,7 @@ export const Signin = () => {
        </button>
        {loading && <Preloader />}
        {isLoged && <Redirect to={{ pathname: "/", userData: userData }}/>}
+       {error   && <EventMessage messageType="error" message={error} />}
     </form>
   )
 }

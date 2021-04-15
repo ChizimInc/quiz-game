@@ -2,11 +2,14 @@ import React, {useState} from 'react'
 import {Redirect} from 'react-router-dom'
 import {Nav} from './components/Nav'
 import {ShowUserInfo} from './components/Account/ShowUserInfo'
+import {Preloader} from './components/Preloader'
+import axios from 'axios'
 
 export const Account = props => {
 
   const [isLoged, setLoged] = useState(false)
   const [userData, setUserData] = useState([])
+  const [loading, setLoading] = useState(false)
 
   if(isLoged == false){
     if(props.location.userData){
@@ -20,11 +23,36 @@ export const Account = props => {
     }
   }
 
+  function editUserDataForm(event, username, password){
+    event.preventDefault()
+    setLoading(true)
+    axios({
+      method: 'put',
+      url: 'http://127.0.0.1:8000/users/update/',
+      headers: {'Content-Type': 'application/json'},
+      data: {
+        "email": userData.email,
+        "username": username,
+        "password": password
+      }
+    })
+    .then((response) => {
+      setLoading(false)
+      localStorage.setItem('userData', JSON.stringify(response.data));
+      setUserData(response.data)
+    }, (error) => {
+      console.log(error);
+      setLoading(false)
+    });
+
+  }
+
   return(
     <div>
       <Nav userData={userData} />
-      <ShowUserInfo userData={userData} />
+      <ShowUserInfo userData={userData} onUpdate={editUserDataForm} />
       { !isLoged && <Redirect to={{ pathname: "/login"}}/> }
+      { loading  && <Preloader />}
     </div>
   )
 }

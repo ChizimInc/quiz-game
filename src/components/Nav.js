@@ -27,7 +27,13 @@ export const Nav = (props) => {
               userData.username
                 ? <li><Link
                         to={{ pathname: "/account", userData: userData }}
-                        >{userData.username}</Link></li>
+                        >{userData.username}
+                          {userData.is_admin &&
+                            <span
+                                class="new badge"
+                                data-badge-caption="Admin">
+                            </span>
+                          }</Link></li>
                 : <li><Link to="/login">Sign in</Link></li>
             }
           </ul>

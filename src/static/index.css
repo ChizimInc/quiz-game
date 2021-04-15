@@ -14,3 +14,36 @@
 .login-submit {
   width: 100%;
 }
+
+.btn {
+  margin-left: 10px;
+}
+
+.card-action-account {
+  display: flex;
+  justify-content: space-between;
+}
+
+.question {
+  width: 80%;
+  margin: 10px auto;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+.answers {
+  border: 1px solid black;
+  margin: 15px;
+  padding: 5px;
+}
+
+.userMap{
+  height: 300px;
+  overflow: auto;
+}
+
+.collection-item:hover {
+  background-color: gainsboro;
+  color: cornflowerblue;
+  transition: 0.3s;
+}

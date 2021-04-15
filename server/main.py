@@ -42,6 +42,29 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db=db, user=user)
 
 
+@app.delete("/users/delete/")
+def delete_user(email: str, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email=email)
+    if db_user is None:
+        raise HTTPException(status_code=400, detail="User not Found")
+    return crud.delete_user(db=db, user=db_user)
+
+
+@app.put("/users/status/isadmin")
+def update_user_admin_status(email: str, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email=email)
+    if db_user is None:
+        raise HTTPException(status_code=400, detail="User not Found")
+    return crud.update_user_admin_status(db=db, user=db_user )
+
+@app.put("/users/update/", response_model=schemas.User)
+def update_user_data(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email=user.email)
+    if db_user is None:
+        raise HTTPException(status_code=400, detail="User not Found")
+    return crud.update_user_data(db=db, user=user )
+
+
 @app.get("/users/", response_model=List[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)

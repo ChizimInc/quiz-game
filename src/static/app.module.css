@@ -21,6 +21,13 @@ body {
   flex-direction: column;
 }
 
+.addGameForm{
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 10px auto;
+}
+
 .h3allgames {
   color: #673ab7;
 }
@@ -29,4 +36,26 @@ body {
   margin: 0;
   padding: 0;
   border: 0;
+}
+
+.errorContainer{
+  margin-top: 10px;
+}
+
+.errorContainer p {
+  color: crimson;
+}
+
+.add {
+  margin: 5px;
+  padding: 0;
+  border: 0;
+  width: 140px;
+}
+
+.addQuestion{
+  margin: 10px auto;
+  padding: 0;
+  border: 0;
+  width: 140px;
 }
