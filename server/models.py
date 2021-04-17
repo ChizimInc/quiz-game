@@ -23,7 +23,7 @@ class Item(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
     question = Column(String, index=True)
 
     questions = relationship('Question', back_populates="questionOwner")
@@ -37,7 +37,7 @@ class Question(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    questionOwner_id = Column(Integer, ForeignKey("games-items.id"))
+    item_id = Column(Integer, ForeignKey("games-items.id"))
     answers = relationship("Answer", back_populates="answerOwner")
 
     questionOwner = relationship("Item", back_populates="questions")
@@ -47,6 +47,6 @@ class Answer(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
-    answerOwner_id = Column(Integer, ForeignKey("questions.id"))
+    question_id = Column(Integer, ForeignKey("questions.id"))
 
     answerOwner = relationship("Question", back_populates="answers")

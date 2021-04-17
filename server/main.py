@@ -98,6 +98,20 @@ def create_item_for_user(
     return crud.create_user_item(db=db, item=item, user_id=user_id)
 
 
+@app.post("/game-items/questions/create/", response_model=schemas.Question)
+def create_questions_for_game(
+    item_id: int, question: schemas.QuestionCreate, db: Session = Depends(get_db)
+):
+    return crud.create_game_question(db=db, question=question, item_id=item_id)
+
+
+@app.post("/game-items/questions/answers/create/", response_model=schemas.Answer)
+def create_answer_for_question(
+    question_id: int, answer: schemas.AnswerCreate, db: Session = Depends(get_db)
+):
+    return crud.create_questions_answer(db=db, answer=answer, question_id=question_id)
+
+
 @app.get("/games-items/", response_model=List[schemas.Item])
 def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     items = crud.get_items(db, skip=skip, limit=limit)

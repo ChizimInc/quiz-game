@@ -1,14 +1,24 @@
-import React, {useState} from 'react'
-import appStyles from '../../static/app.module.css'
-import '../../static/index.css'
+import React, {useState}  from 'react'
+import appStyles          from '../../static/app.module.css'
+import                    '../../static/index.css'
+import axios              from 'axios'
+import {GameForm}         from './Add/GameForm'
+import {AnswersForm}      from './Add/AnswersForm'
+import {QuestionsForm}    from './Add/QuestionsForm'
 
-export const Add = props => {
+export const Add = ({userData}) => {
 
-  const [addAnswer, setAddAnswer] = useState(2)
-  const [addQuestion, setAddQuestion] = useState(1)
+  const [addAnswer, setAddAnswer]         = useState(2)
+  const [addQuestion, setAddQuestion]     = useState(1)
+  const [showQuestions, setShowQuestions] = useState(false)
+  const [name, setName]                   = useState([])
+  const [description, setDescription]     = useState([])
+  const [newGameId, setNewGameId]         = useState([])
+  const [question, setQuestion]           = useState([])
+  const [answersInput, setAnswersInput]    = useState({value: []})
 
 
-  const questions = []
+  const questionsArr = []
 
   function onAddAnswer(event) {
     event.preventDefault()
@@ -20,60 +30,78 @@ export const Add = props => {
     setAddQuestion(addQuestion + 1)
   }
 
+  function onName(event){
+    setName(event.target.value)
+  }
+
+  function onDescription(event){
+    setDescription(event.target.value)
+  }
+
+  function onQuestion(event){
+    setQuestion(event.target.value)
+  }
+
+  function createGame(event){
+    event.preventDefault()
+    setShowQuestions(true)
+    // url = `http://127.0.0.1:8000/users/${userData.id}/games-items/`
+    // axios({
+    //   method: 'post',
+    //   url: url,
+    //   headers: {'Content-Type': 'application/json'},
+    //   data: {
+    //     "title": name,
+    //     "description": description,
+    //     "questions": []
+    //   }
+    // })
+    // .then((response) => {
+    //   setNewGameId(response.id)
+    // }, (error) => {
+    //   console.log(error);
+    // });
+  }
+
   for (var i = 0; i < addQuestion; i++) {
 
-    const answers = []
+    const answersArr = []
     for (var j = 0; j < addAnswer; j++) {
-      answers.push(<div className="input-field col s6 login-input">
-        <input id={"game-answer-" + j} type="text" className="validate"/>
-        <label className="active" for={"game-answer-" + j}>answer</label>
-      </div>)
+      answersArr.push(
+        <AnswersForm
+          j               = {j}
+          answersInput    = {answersInput}
+          setAnswersInput = {setAnswersInput}
+        />
+      )
     }
-    questions.push(
-      <div className="question">
-
-        <div className="input-field col s6 login-input">
-          <input id={"game-question-" + i} type="text" className="validate"/>
-          <label className="active" for={"game-question-" + i}>question</label>
-        </div>
-
-        <div className="answers">
-          {answers}
-
-          <button className={appStyles.add}>
-             <a onClick={onAddAnswer}
-                className="waves-effect waves-light btn-small login-submit">Add answer
-             </a>
-          </button>
-        </div>
-
-      </div>
-
+    questionsArr.push(
+      <QuestionsForm
+          onQuestion  = {onQuestion}
+          question    = {question}
+          answersArr  = {answersArr}
+          onAddAnswer = {onAddAnswer}
+          i           = {i}
+      />
     )
   }
 
   return(
     <form className={appStyles.addGameForm}>
-       <div className="input-field col s6 login-input">
-         <input id="game-name" type="text" className="validate"/>
-         <label className="active" for="game-name">Name:</label>
-       </div>
-       <div className="input-field col s6 login-input">
-         <input id="game-desc" type="text" className="validate"/>
-         <label className="active" for="game-desc">Description</label>
-       </div>
 
-        {questions}
 
-        <button className={appStyles.addQuestion}>
-           <a onClick={onAddQuestion}
-              className="waves-effect waves-light btn-small login-submit">Add question
-           </a>
-        </button>
+        {
+          showQuestions
+            ? questionsArr
+            : <GameForm
+                onName        = {onName}
+                name          = {name}
+                onDescription = {onDescription}
+                createGame    = {createGame}
+              />
+        }
 
-       <button type="submit" className={appStyles.loginSubmit}>
-          <a className="waves-effect waves-light btn-small login-submit">Add</a>
-       </button>
+
     </form>
   )
 }

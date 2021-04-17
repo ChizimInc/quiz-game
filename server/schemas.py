@@ -1,19 +1,29 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-class Answer(BaseModel):
-    id: int
+class AnswerBase(BaseModel):
     title: str
-    answerOwner_id: int
+
+class AnswerCreate(AnswerBase):
+    pass
+
+class Answer(AnswerBase):
+    id: int
+    question_id: int
 
     class Config:
         orm_mode = True
 
-class Question(BaseModel):
-    id: int
+class QuestionBase(BaseModel):
     title: str
-    questionOwner_id: int
     answers: List[Answer] = []
+
+class QuestionCreate(QuestionBase):
+    pass
+
+class Question(QuestionBase):
+    id: int
+    item_id: int
 
     class Config:
         orm_mode = True
@@ -29,7 +39,7 @@ class ItemCreate(ItemBase):
 
 class Item(ItemBase):
     id: int
-    owner_id: int
+    user_id: int
 
     class Config:
         orm_mode = True
