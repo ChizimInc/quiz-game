@@ -3,8 +3,7 @@ import React from 'react'
 export const AnswersForm = ({j, answersInput, setAnswersInput}) => {
 
   function onAnswer(j, event){
-    console.log(event.target.value)
-    console.log("index", j)
+    setAnswersInput({ ...answersInput, [j]: event.target.value})
   }
 
   return(

@@ -26,8 +26,8 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-def update_user_admin_status(db: Session, user:schemas.User):
-    user_db = db.query(models.User).filter(models.User.email == user.email).first()
+def update_user_admin_status(db: Session, user: str):
+    user_db = db.query(models.User).filter(models.User.email == user).first()
     user_db.is_admin = True
     db.commit()
     db.refresh(user_db)
@@ -39,15 +39,40 @@ def update_user_data(db: Session, user:schemas.User):
     user_db.username = user.username
     if not user.password :
         user_db.hashed_password = user.password
-
-    print("UserDb",user_db)
     db.commit()
     db.refresh(user_db)
     return user_db
 
+def update_user_item(db: Session, item_id: int, item:schemas.Item):
+    item_db = db.query(models.Item).filter(models.Item.id == item_id).first()
+    item_db.title = item.title
+    item_db.description = item.description
+    db.commit()
+    db.refresh(item_db)
+    return item_db
+
+def update_item_question(db: Session, item_id: int, item:schemas.Question):
+    item_db = db.query(models.Question).filter(models.Question.id == item_id).first()
+    item_db.title = item.title
+    db.commit()
+    db.refresh(item_db)
+    return item_db
+
+def update_question_answer(db: Session, item_id: int, item:schemas.Answer):
+    item_db = db.query(models.Answer).filter(models.Answer.id == item_id).first()
+    item_db.title = item.title
+    db.commit()
+    db.refresh(item_db)
+    return item_db
+
 def delete_user(db: Session, user:schemas.User):
     user_db = db.query(models.User).filter(models.User.email == user.email).first()
     db.delete(user_db)
+    db.commit()
+
+def delete_user_game_by_id(db: Session, games_id: int):
+    item_db = db.query(models.Item).filter(models.Item.id == games_id).first()
+    db.delete(item_db)
     db.commit()
 
 def get_items(db: Session, skip: int = 0, limit: int = 100):

@@ -14,7 +14,7 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
-    "http://localhost:8080",
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
@@ -50,12 +50,12 @@ def delete_user(email: str, db: Session = Depends(get_db)):
     return crud.delete_user(db=db, user=db_user)
 
 
-@app.put("/users/status/isadmin")
+@app.put("/users/status/isadmin", response_model=schemas.User)
 def update_user_admin_status(email: str, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=email)
     if db_user is None:
         raise HTTPException(status_code=400, detail="User not Found")
-    return crud.update_user_admin_status(db=db, user=db_user )
+    return crud.update_user_admin_status(db=db, user=db_user.email )
 
 @app.put("/users/update/", response_model=schemas.User)
 def update_user_data(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -96,6 +96,29 @@ def create_item_for_user(
     user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
 ):
     return crud.create_user_item(db=db, item=item, user_id=user_id)
+
+@app.put("/users/games-items/{item_id}/edit", response_model=schemas.Item)
+def update_item_for_user(
+     item_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
+):
+    return crud.update_user_item(db=db, item=item, item_id=item_id)
+
+@app.put("/users/games-items/question/{item_id}/edit", response_model=schemas.Question)
+def update_item_for_user(
+     item_id: int, item: schemas.QuestionCreate, db: Session = Depends(get_db)
+):
+    return crud.update_item_question(db=db, item=item, item_id=item_id)
+
+@app.put("/users/games-items/answer/{item_id}/edit", response_model=schemas.Answer)
+def update_item_for_user(
+     item_id: int, item: schemas.AnswerCreate, db: Session = Depends(get_db)
+):
+    return crud.update_question_answer(db=db, item=item, item_id=item_id)
+
+
+@app.delete("/users/games-items/{games_id}/delete/")
+def delete_games_items(games_id: int, db: Session = Depends(get_db)):
+    return crud.delete_user_game_by_id(db=db, games_id=games_id)
 
 
 @app.post("/game-items/questions/create/", response_model=schemas.Question)

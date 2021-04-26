@@ -5,12 +5,14 @@ import appStyles from '../static/app.module.css'
 export const Nav = (props) => {
 
   const [userData, setUserData] = React.useState([])
+  const [isAdmin, setIsAdmin] = React.useState(false)
 
   useEffect( () => {
     if (props.userData) {
       setUserData(props.userData)
     }
   }, [userData] );
+
 
   return(
       <nav className={appStyles.nav} >
@@ -28,7 +30,7 @@ export const Nav = (props) => {
                 ? <li><Link
                         to={{ pathname: "/account", userData: userData }}
                         >{userData.username}
-                          {userData.is_admin &&
+                          {props.userData.is_admin &&
                             <span
                                 class="new badge"
                                 data-badge-caption="Admin">

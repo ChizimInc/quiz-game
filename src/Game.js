@@ -1,16 +1,31 @@
-import React, {useState, useEffect} from 'react'
-import {Preloader} from './components/Preloader'
-import {Nav} from './components/Nav'
-import {useParams} from "react-router-dom";
-import {Question} from './components/Game/Question'
+import React, {useState, useEffect}   from 'react'
+import {Preloader}                    from './components/Preloader'
+import {Nav}                          from './components/Nav'
+import {useParams}                    from "react-router-dom";
+import {Question}                     from './components/Game/Question'
 
 
-function Game() {
+function Game(props) {
 
   const [item, setItem] = useState([{id:1}])
   const [loading, setLoading] = useState(true)
 
   const { id, title } = useParams();
+
+  const [isLoged, setLoged] = useState(false)
+  const [userData, setUserData] = useState([])
+
+  if(isLoged == false){
+    if(props.location.userData){
+      setUserData(props.location.userData)
+      setLoged(true)
+    }else{
+      if(JSON.parse(localStorage.getItem('userData'))){
+        setUserData(JSON.parse(localStorage.getItem('userData')))
+        setLoged(true)
+      }
+    }
+  }
 
   React.useEffect(function effectFunction() {
        async function fetchItems() {
@@ -26,7 +41,7 @@ function Game() {
 
   return(
     <div>
-      <Nav />
+      <Nav userData={userData} />
       <div className='container'>
         {loading == true && <Preloader />}
         { item.questions

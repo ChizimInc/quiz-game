@@ -47,10 +47,19 @@ export const Account = props => {
 
   }
 
+  function onSetAdmin(event){
+    event.preventDefault()
+    axios.put(`http://127.0.0.1:8000/users/status/isadmin?email=${userData.email}`)
+      .then( (response) =>  {
+        localStorage.setItem('userData', JSON.stringify(response.data));
+        setUserData(response.data)
+      });
+  }
+
   return(
     <div>
-      <Nav userData={userData} />
-      <ShowUserInfo userData={userData} onUpdate={editUserDataForm} />
+    <Nav userData={userData} isAdmin={userData.is_admin} />
+      <ShowUserInfo userData={userData} onUpdate={editUserDataForm} onSetAdmin={onSetAdmin} />
       { !isLoged && <Redirect to={{ pathname: "/login"}}/> }
       { loading  && <Preloader />}
     </div>

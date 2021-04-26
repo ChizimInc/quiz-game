@@ -1,7 +1,19 @@
 import React        from 'react'
 import appStyles    from '../../../static/app.module.css'
 
-export const QuestionsForm = ({onQuestion, question, answersArr, onAddAnswer, i}) => {
+export const QuestionsForm = (
+  {
+    onQuestion,
+    question,
+    answersArr,
+    onAddAnswer,
+    i,
+    createQandA,
+    showFinishButton,
+    showGoToGameButton,
+    onFinish,
+    onLink
+  }) => {
   return(
     <div>
       <div className="question">
@@ -28,9 +40,15 @@ export const QuestionsForm = ({onQuestion, question, answersArr, onAddAnswer, i}
 
       </div>
 
-     <button type="submit" className={appStyles.loginSubmit}>
+     <button
+        type="submit"
+        className={appStyles.loginSubmit}
+        onClick={createQandA}>
+
         <a className="waves-effect waves-light btn-small login-submit">Add</a>
      </button>
+     {showFinishButton    && <button onClick={onFinish}>Finish</button>}
+     {showGoToGameButton  && <button onClick={onLink}>Go to</button>}
   </div>
   )
 }

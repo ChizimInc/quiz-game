@@ -12,6 +12,10 @@ body {
   margin-right: 6px;
 }
 
+.gamesTitleMap{
+  width: 150px;
+}
+
 .answerLabel {
   display: flex;
   align-items: center;
@@ -58,4 +62,14 @@ body {
   padding: 0;
   border: 0;
   width: 140px;
+}
+
+.actionBtnGreen a {
+  margin: 0 15px;
+  color: green;
+}
+
+.actionBtnRed a {
+  margin: 0 15px;
+  color: red;
 }
