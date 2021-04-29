@@ -57,6 +57,10 @@ def update_user_admin_status(email: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="User not Found")
     return crud.update_user_admin_status(db=db, user=db_user.email )
 
+@app.put("/users/games-items/answer/{item_id}/correct", response_model=schemas.Answer)
+def update_answer_status(item_id: int, status: bool, db: Session = Depends(get_db)):
+    return crud.update_answer_correct_status(db=db, item_id=item_id, status=status )
+
 @app.put("/users/update/", response_model=schemas.User)
 def update_user_data(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)

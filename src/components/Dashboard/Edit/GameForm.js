@@ -29,8 +29,7 @@ const [reload, setReload]             = useState(false)
 
 
   if(gameData.title){
-    questions = gameData.questions.map( item => <Question questionDelete={questionDelete} gameEdit={gameEdit} item={item} />)
-    console.log("gameData from if", gameData)
+    questions = gameData.questions.map( item => <Question questionDelete={questionDelete} setCorrect={setCorrect} gameEdit={gameEdit} item={item} />)
   }
 
   function onInput(event){
@@ -124,9 +123,44 @@ const [reload, setReload]             = useState(false)
     setAnswerId(answerId)
   }
 
+  function setCorrect(event, answerId, questionId){
+    event.preventDefault()
+    gameData.questions.map( question => {
+      question.answers.map( answer => {
+        if(answer.question_id == questionId){
+          if(answer.correct){
+            const path  = `http://127.0.0.1:8000/users/games-items/answer/${answer.id}/correct?status=false`
+            axios({
+              method: 'put',
+              url: path,
+              headers: {'Content-Type': 'application/json'}
+            })
+              answer.correct = false
+              setGameData(gameData)
+              setReload(!reload)
+
+          }else{
+            if(answer.id == answerId){
+              const path = `http://127.0.0.1:8000/users/games-items/answer/${answer.id}/correct?status=true`
+              axios({
+                method: 'put',
+                url: path,
+                headers: {'Content-Type': 'application/json'}
+              })
+              answer.correct = true
+              setGameData(gameData)
+              setReload(!reload)
+            }
+
+          }
+        }
+      })
+    })
+  }
+
 
   return(
-    <div>
+    <div className={editStyles.editContainer}>
       <div className={editStyles.title}>
         <h6>Title: {gameData.title}</h6>
         <button onClick={gameEdit.bind(null, event, gameData.title, "title")}>Edit</button>

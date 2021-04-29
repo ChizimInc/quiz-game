@@ -18,6 +18,7 @@ export const Add = ({userData, onAddGame}) => {
   const [question, setQuestion]           = useState([])
   const [answersInput, setAnswersInput]   = useState([])
   const [showNewGame, setShowNewGame]     = useState(false)
+  const [points, setPoints]               = useState(25)
 
 
   const questionsArr = []
@@ -42,6 +43,10 @@ export const Add = ({userData, onAddGame}) => {
 
   function onQuestion(event){
     setQuestion(event.target.value)
+  }
+
+  function onPoints(event){
+    setPoints(event.target.value)
   }
 
   function createGame(event){
@@ -70,12 +75,14 @@ export const Add = ({userData, onAddGame}) => {
     event.preventDefault()
 
     const url = `http://127.0.0.1:8000/game-items/questions/create/?item_id=${newGameId}`
+
     axios({
       method: 'post',
       url: url,
       headers: {'Content-Type': 'application/json'},
       data: {
         "title": question,
+        "points": points,
         "answers": []
       }
     })
@@ -127,6 +134,8 @@ export const Add = ({userData, onAddGame}) => {
           onAddAnswer = {onAddAnswer}
           i           = {i}
           createQandA = {createQandA}
+          onPoints    = {onPoints}
+          points      = {points}
       />
     )
   }

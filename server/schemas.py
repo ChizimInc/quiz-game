@@ -3,6 +3,7 @@ from typing import List, Optional
 
 class AnswerBase(BaseModel):
     title: str
+    correct: bool = False
 
 class AnswerCreate(AnswerBase):
     pass
@@ -16,6 +17,8 @@ class Answer(AnswerBase):
 
 class QuestionBase(BaseModel):
     title: str
+    selected: bool = False
+    points: int
     answers: List[Answer] = []
 
 class QuestionCreate(QuestionBase):

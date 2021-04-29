@@ -73,3 +73,63 @@ body {
   margin: 0 15px;
   color: red;
 }
+
+.succes {
+  color: green;
+}
+
+.danger {
+  color: red;
+}
+
+.number {
+  width: 20% !important;
+  margin-right: 15px !important;
+}
+
+.numberContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.succesCreateMsg{
+  display: flex;
+  justify-content: center;
+  color: green;
+  border-bottom: 0.2px;
+  border-bottom-color: green;
+  border-bottom-style: solid;
+}
+
+.informEditMsg{
+  display: flex;
+  justify-content: center;
+  color: blueviolet;
+}
+
+.createGameCont {
+  border: 1px solid #546e7a;
+  border-radius: 16px;
+  padding: 10px;
+}
+
+.newGameInfo{
+
+}
+
+.newGameQuestionCont{
+  padding-left: 20px;
+}
+
+.newGameQuestionCont p{
+  margin-top: 0;
+}
+
+.newGameQuestionCont h4{
+  margin-bottom: 0;
+}
+
+.newGameBtn{
+  display: flex;
+  justify-content: space-evenly;
+}

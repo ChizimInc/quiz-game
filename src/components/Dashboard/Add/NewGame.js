@@ -1,9 +1,11 @@
 import React, {useState, useEffect}     from 'react'
+import {Redirect}                       from 'react-router-dom'
 import axios                            from 'axios'
 import {Preloader}                      from '../../Preloader'
 import {Question}                       from '../../Game/Question'
 import {QuestionsForm}                  from './QuestionsForm'
 import {AnswersForm}                    from './AnswersForm'
+import appStyles                        from '../../../static/app.module.css'
 
 export const NewGame = ({newGameId, setShowNewGame}) => {
 
@@ -17,6 +19,9 @@ export const NewGame = ({newGameId, setShowNewGame}) => {
   const [questionMap, setQuestionMap]               = useState([])
   const [showFinishButton, setShowFinishButton]     = useState(true)
   const [showGoToGameButton, setShowGoToGameButton] = useState(true)
+  const [points, setPoints]                         = useState(25)
+  const [reload, setReload]                         = useState(false)
+  const [onLinkRedirect, setOnLinkRedirect]         = useState(false)
 
   useEffect( () => {
     axios.get(`http://127.0.0.1:8000/game-items/?item_id=${newGameId}`)
@@ -29,6 +34,45 @@ export const NewGame = ({newGameId, setShowNewGame}) => {
   }, []);
 
 
+  function setCorrect(event, answerId, questionId){
+    event.preventDefault()
+    if(gameData.length){
+      console.log("gameData: ", gameData)
+      gameData.questions.map( question => {
+        question.answers.map( answer => {
+          if(answer.question_id == questionId){
+            if(answer.correct){
+              const path  = `http://127.0.0.1:8000/users/games-items/answer/${answer.id}/correct?status=false`
+              axios({
+                method: 'put',
+                url: path,
+                headers: {'Content-Type': 'application/json'}
+              })
+                answer.correct = false
+                setGameData(gameData)
+                setReload(!reload)
+
+            }else{
+              if(answer.id == answerId){
+                const path = `http://127.0.0.1:8000/users/games-items/answer/${answer.id}/correct?status=true`
+                axios({
+                  method: 'put',
+                  url: path,
+                  headers: {'Content-Type': 'application/json'}
+                })
+                answer.correct = true
+                setGameData(gameData)
+                setReload(!reload)
+              }
+
+            }
+          }
+        })
+      })
+    }
+
+  }
+
 
   function createQandA(event){
     event.preventDefault()
@@ -40,6 +84,7 @@ export const NewGame = ({newGameId, setShowNewGame}) => {
       headers: {'Content-Type': 'application/json'},
       data: {
         "title": question,
+        "points": points,
         "answers": []
       }
     })
@@ -63,6 +108,7 @@ export const NewGame = ({newGameId, setShowNewGame}) => {
                 setGameData(response.data)
                 setQuestionMap(response.data.questions.map( (item) => <Question item={item}/> ) )
                 setQuestion([])
+                setPoints(25)
                 setLoading(false)
               });
               setShowNewGame(true)
@@ -83,6 +129,10 @@ export const NewGame = ({newGameId, setShowNewGame}) => {
     setQuestion(event.target.value)
   }
 
+  function onPoints(event){
+    setPoints(event.target.value)
+  }
+
   function onAddAnswer(event) {
     event.preventDefault()
     setAddAnswer(addAnswer + 1)
@@ -95,6 +145,7 @@ export const NewGame = ({newGameId, setShowNewGame}) => {
 
   function onLink(event){
     event.preventDefault()
+    setOnLinkRedirect(true)
   }
 
   const answersArr = []
@@ -115,21 +166,40 @@ export const NewGame = ({newGameId, setShowNewGame}) => {
                             onAddAnswer         = {onAddAnswer}
                             i                   = {i}
                             createQandA         = {createQandA}
-
+                            onPoints            = {onPoints}
+                            points              = {points}
                         />
 
 
   return(
-    <div>
+    <div className={appStyles.createGameCont}>
       { loading && <Preloader /> }
-      <p>Game create succesful</p>
-      <h4>Title: {gameData.title}</h4>
-      <h6>Description: {gameData.description}</h6>
+      <div className={appStyles.succesCreateMsg}>
+        <p>Game create succesful</p>
+      </div>
+
+      <div className={appStyles.newGameInfo}>
+        <h4>Title: {gameData.title}</h4>
+        <p>Description: {gameData.description}</p>
+      </div>
+
       {questionMap.length && questionMap}
-      <button onClick={(event) => {setShowAddQuestion(!showAddQuestion); event.preventDefault()}}>Add question</button>
-      <button onClick={onFinish} >Finish</button>
-      <button onClick={onLink} >Go to Game</button>
+
+      <div className={appStyles.newGameBtn}>
+        <button className="btn btn-small"
+          onClick={(event) => {setShowAddQuestion(!showAddQuestion); event.preventDefault()}}>Add question</button>
+        <button className="btn btn-small blue"
+          onClick={onLink} >set correct</button>
+      </div>
+
+      {onLinkRedirect && <Redirect to={`dashboard/game/edit/${gameData.id}`} /> }
+
+      <div className={appStyles.informEditMsg}>
+        <p>For set correct answer click "set correct"</p>
+      </div>
+
       {showAddQuestion && questionsForm}
+
     </div>
   )
 }

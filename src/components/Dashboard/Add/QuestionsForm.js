@@ -12,7 +12,9 @@ export const QuestionsForm = (
     showFinishButton,
     showGoToGameButton,
     onFinish,
-    onLink
+    onLink,
+    points,
+    onPoints
   }) => {
   return(
     <div>
@@ -26,6 +28,15 @@ export const QuestionsForm = (
               type="text"
               className="validate"/>
           <label className="active" for={"game-question-" + i}>question</label>
+          <div className={appStyles.numberContainer}>
+            <input
+              className={appStyles.number}
+              onChange={onPoints}
+              placeholder="points"
+              value={points}
+              type="number"/>
+              <p>points</p>
+          </div>
         </div>
 
         <div className="answers">

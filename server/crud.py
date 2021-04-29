@@ -33,6 +33,13 @@ def update_user_admin_status(db: Session, user: str):
     db.refresh(user_db)
     return user_db
 
+def update_answer_correct_status(db: Session, item_id: int, status: bool):
+    answer_db = db.query(models.Answer).filter(models.Answer.id == item_id).first()
+    answer_db.correct = status
+    db.commit()
+    db.refresh(answer_db)
+    return answer_db
+
 
 def update_user_data(db: Session, user:schemas.User):
     user_db = db.query(models.User).filter(models.User.email == user.email).first()

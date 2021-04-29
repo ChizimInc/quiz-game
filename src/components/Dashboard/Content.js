@@ -37,7 +37,6 @@ export const Content = ({userData}) => {
       setUsersList(responseArr[0].data)
       setGamesList(responseArr[1].data)
       setLoading(false)
-      //console.log("useEffect")
     }, (error) => {
       setLoading(false)
     });
