@@ -26,3 +26,10 @@ Recomended System Requirements:
   python3 -m uvicorn main:app --reload
   ```
   server adress 127.0.0.1:8000/docs
+  
+  # Sign in with admin user
+  
+  ```admin
+  login: cezar@admin
+  pass:  united
+  ```
