@@ -3,18 +3,21 @@ import {Preloader}                    from './components/Preloader'
 import {Nav}                          from './components/Nav'
 import {useParams}                    from "react-router-dom";
 import {Question}                     from './components/Game/Question'
+import {Result}                       from './components/Game/Result'
 
 
 function Game(props) {
 
-  const [item, setItem]               = useState([{id:1}])
-  const [loading, setLoading]         = useState(true)
-  const { id, title }                 = useParams();
-  const [isLoged, setLoged]           = useState(false)
-  const [userData, setUserData]       = useState([])
-  const [answerRadio, setAnswerRadio] = useState([])
-  const [reload, setReload]           = useState(false)
-  const [showAnswer, setShowAnswer]   = useState(false)
+  const [item, setItem]                               = useState([{id:1}])
+  const [loading, setLoading]                         = useState(true)
+  const { id, title }                                 = useParams();
+  const [isLoged, setLoged]                           = useState(false)
+  const [userData, setUserData]                       = useState([])
+  const [answerRadio, setAnswerRadio]                 = useState([])
+  const [reload, setReload]                           = useState(false)
+  const [showAnswer, setShowAnswer]                   = useState(false)
+  const [correctAnswerCount , setCorrectAnswerCount]  = useState(0)
+  const [points, setPoints]                           = useState(0)
 
   if(isLoged == false){
     if(props.location.userData){
@@ -33,7 +36,6 @@ function Game(props) {
            const path = `http://127.0.0.1:8000/game-items/?item_id=${id}`;
            const response = await fetch(path);
            const json = await response.json();
-           console.log("effect",json)
            setItem(json);
            setLoading(false)
        }
@@ -45,9 +47,7 @@ function Game(props) {
      let answerState = answerRadio
 
      if(answerState.length){
-       answerState.map(item => {
-         answerState.push({name: value, "question_id": question_id })
-       })
+       answerState.push({name: value, "question_id": question_id })
      }else{
        answerState = [{name: value, "question_id": question_id }]
      }
@@ -60,14 +60,33 @@ function Game(props) {
        }
      })
 
+
      setAnswerRadio(
        answerState
      )
    }
+   let count      = correctAnswerCount
+   let pointsVar  = points
 
   function onVerify(event){
     event.preventDefault()
     setShowAnswer(true)
+    item.questions.map( question => {
+      question.answers.map( answer => {
+        answerRadio.map( userAnswer => {
+          if(question.id == userAnswer.question_id){
+            if(answer.correct){
+              if(answer.title == userAnswer.name){
+                count++
+                pointsVar = pointsVar + question.points
+                setCorrectAnswerCount(count)
+                setPoints(pointsVar)
+              }
+            }
+          }
+        })
+      })
+    })
   }
 
    let itemMap;
@@ -85,8 +104,8 @@ function Game(props) {
           : loading ? null : <p>no data</p>
         }
         {loading ? null
-          : showAnswer ? <p>Answer resultat</p>
-          : <button onClick={onVerify}>Verify</button>
+          : showAnswer ? <Result count={correctAnswerCount} points={points} item={item} />
+          : <button className="btn btn-small blue" onClick={onVerify}>Verify</button>
         }
       </div>
     </div>
